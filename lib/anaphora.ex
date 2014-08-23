@@ -2,7 +2,7 @@ defmodule Anaphora do
   @vsn "0.0.1"
 
   @moduledoc """
-  Anaphorex main module
+  The anaphoric macro collection for Elixir
   """
 
   @doc """

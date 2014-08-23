@@ -2,7 +2,7 @@ defmodule Anaphora.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :anaphorex,
+    [app: :anaphora,
      version: "0.0.1",
      elixir: "~> 0.15.1",
      deps: deps,
@@ -20,13 +20,13 @@ defmodule Anaphora.Mixfile do
 
   defp description do
   """
-  Anaphorex is the anaphoric macro collection for Elixir
+  The anaphoric macro collection for Elixir
   """
   end
 
   defp package do
     [contributors: ["Alexander Sviridov"],
      licenses: ["The MIT License"],
-     links: %{"Github" => "https://github.com/sviridov/anaphorex"}]
+     links: %{"Github" => "https://github.com/sviridov/anaphora-elixir"}]
   end
 end
