@@ -18,6 +18,12 @@ defmodule Anaphora.Mixfile do
     []
   end
 
+  defp description do
+  """
+  Anaphorex is the anaphoric macro collection for Elixir
+  """
+  end
+
   defp package do
     [contributors: ["Alexander Sviridov"],
      licenses: ["The MIT License"],
