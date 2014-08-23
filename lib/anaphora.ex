@@ -5,6 +5,12 @@ defmodule Anaphora do
   The anaphoric macro collection for Elixir
   """
 
+  defmacro __using__(_) do
+    quote do
+      import Anaphora
+    end
+  end
+
   @doc """
   Returns the `it` variable defined in user context
   """
