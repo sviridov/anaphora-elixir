@@ -53,11 +53,53 @@ defmodule Anaphora do
 
      iex> Anaphora.aif 1 == 2, do: :never, else: it
      false
+
   """
   defmacro aif(condition, clauses) do
     quote do
       Anaphora.alet unquote(condition) do
         if(unquote(it), unquote(clauses))
+      end
+    end
+  end
+
+  @doc """
+  Like `cond`, except result of each `condition` is bound to `it` (via `alet`) for the
+  scope of the corresponding `body`
+
+  ## Examples
+
+     iex> Anaphora.acond do
+     ...>   :acond_test -> it
+     ...> end
+     :acond_test
+
+     iex> Anaphora.acond do
+     ...>   1 + 2 == 4 -> :never
+     ...>   false -> :never
+     ...>   2 * 2 + 2 -> it / 2
+     ...>   true && false -> :never
+     ...> end
+     3.0
+
+    iex> Anaphora.acond do
+    ...>   false -> :never
+    ...> end
+    nil
+
+  """
+  defmacro acond(clauses)
+  defmacro acond(do: []), do: nil
+  defmacro acond(do: clauses) do
+    {:->, _context, [[condition], body]} = hd(clauses)
+
+    quote do
+      Anaphora.aif unquote(condition) do
+        unquote(body)
+      else
+        Anaphora.acond do
+          unquote(tl(clauses))
+        end
       end
     end
   end
