@@ -84,7 +84,7 @@ defmodule Anaphora do
      ...>   1 + 2 == 4 -> :never
      ...>   false -> :never
      ...>   2 * 2 + 2 -> it / 2
-     ...>   true && false -> :never
+     ...>   true -> :never
      ...> end
      3.0
 
