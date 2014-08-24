@@ -25,6 +25,21 @@ defmodule User
 end
 ```
 
+#### aif
+
+Works like `if`, except that result of the condition is bound to `it` (via `alet`) for the scope of the then and else clauses:
+
+```elixir
+defmodule User
+  use Anaphora
+  
+  ...
+  def user_email(user_id) do
+    aif fetch_user(user_id), do: it.email, else: raise "Failed to fetch user"
+  end
+end
+```
+
 #### acond
 
 Works like `cond`, except that result of each condition is bound to `it` (via `alet`) for the scope of the corresponding body:
