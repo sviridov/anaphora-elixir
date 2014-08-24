@@ -8,6 +8,23 @@ Just add the `anaphora` project to your mix file as a dependency. Then `use Anap
 
 ### Provided API
 
+#### alet
+
+`alet` is basic anaphoric macro. It's not very useful in user code but other anaphoric macros are built on top of it. `alet` binds some expression to the `it` variable (via `case`) in the scope of the body:
+
+```elixir
+defmodule User
+  use Anaphora
+  
+  ...
+  def user_email(user_id) do
+    alet fetch_user(user_id) do
+      if it, do: it.email
+    end
+  end
+end
+```
+
 #### acond
 
 Works like `cond`, except that result of each condition is bound to `it` (via `alet`) for the scope of the corresponding body:
