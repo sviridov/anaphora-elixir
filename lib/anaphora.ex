@@ -11,9 +11,7 @@ defmodule Anaphora do
     end
   end
 
-  @doc """
-  Returns the `it` variable defined in user context
-  """
+  ## Returns the `it` variable defined in user context
   defp it do
     Macro.var(:it, nil)
   end
@@ -42,8 +40,8 @@ defmodule Anaphora do
   end
 
   @doc """
-  Like `if`, except binds the result of the `condition` to `it` (via `alet`) for
-  the scope of the then and else `clauses`
+  Works like `if`, except that result of the `condition` is bound to `it` (via `alet`) for the
+  scope of the then and else `clauses`
 
   ## Examples
 
@@ -70,7 +68,7 @@ defmodule Anaphora do
   end
 
   @doc """
-  Like `cond`, except result of each `condition` is bound to `it` (via `alet`) for the
+  Works like `cond`, except that result of each `condition` is bound to `it` (via `alet`) for the
   scope of the corresponding `body`
 
   ## Examples
