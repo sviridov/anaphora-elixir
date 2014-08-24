@@ -13,9 +13,9 @@ Just add the `anaphora` project to your mix file as a dependency. Then `use Anap
 `alet` is basic anaphoric macro. It's not very useful in user code but other anaphoric macros are built on top of it. `alet` binds some expression to the `it` variable (via `case`) in the scope of the body:
 
 ```elixir
-defmodule User
+defmodule User do
   use Anaphora
-  
+
   ...
   def user_email(user_id) do
     alet fetch_user(user_id) do
@@ -30,9 +30,9 @@ end
 Works like `if`, except that result of the condition is bound to `it` (via `alet`) for the scope of the then and else clauses:
 
 ```elixir
-defmodule User
+defmodule User do
   use Anaphora
-  
+
   ...
   def user_email(user_id) do
     aif fetch_user(user_id), do: it.email, else: raise "Failed to fetch user"
@@ -45,9 +45,9 @@ end
 Works like `cond`, except that result of each condition is bound to `it` (via `alet`) for the scope of the corresponding body:
 
 ```elixir
-defmodule Notification
+defmodule Notification do
   use Anaphora
-  
+
   ...
   def send_notification(user, message) do
     acond do
@@ -58,3 +58,7 @@ defmodule Notification
   end
 end
 ```
+
+#### acase
+
+Works like `case`, except that result of the key expression is bound to `it` (via `alet`) for the  scope of the cases.

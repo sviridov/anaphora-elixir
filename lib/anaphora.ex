@@ -107,4 +107,42 @@ defmodule Anaphora do
       end
     end
   end
+
+  @doc """
+  Works like `case`, except that result of the `key` expression is bound to `it` (via `alet`) for the
+  scope of the `cases`
+
+  ## Examples
+
+     iex> Anaphora.acase :acase_test do
+     ...>   :acase_test -> it
+     ...> end
+     :acase_test
+
+     iex> Anaphora.acase [1, 2, 3] do
+     ...>   {a, b, c} -> :never
+     ...>   [1 | tale] -> it -- tale
+     ...>   _ -> :never
+     ...> end
+     [1]
+
+     iex> try do
+     ...>   Anaphora.acase true do
+     ...>     false -> :never
+     ...>   end
+     ...> rescue
+     ...>   _e in CaseClauseError -> :error
+     ...> end
+     :error
+
+  """
+  defmacro acase(key, do: cases) do
+    quote do
+      Anaphora.alet unquote(key) do
+        case unquote(it) do
+          unquote(cases)
+        end
+      end
+    end
+  end
 end
