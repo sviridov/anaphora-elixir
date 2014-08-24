@@ -19,7 +19,7 @@ defmodule User
   ...
   def user_email(user_id) do
     alet fetch_user(user_id) do
-      if it, do: it.email
+      if it, do: it.email, else: raise "Failed to fetch user"
     end
   end
 end
