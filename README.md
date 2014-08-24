@@ -62,3 +62,22 @@ end
 #### acase
 
 Works like `case`, except that result of the key expression is bound to `it` (via `alet`) for the  scope of the cases.
+
+#### afn
+
+Works like `fn`, except that anonymous function is bind to `it` (via `blood magic`):
+
+```elixir
+import Anaphora
+
+in_order_tree_traversal = afn do
+  {left, center, right}, callback ->
+    it.(left, callback)
+    callback.(center)
+    it.(right, callback)
+  nil, _ -> nil
+end
+
+in_order_tree_traversal.({{nil, 1, nil}, 2, {nil, 3, {nil, 4, nil}}}, &IO.puts/1)
+# => 1, 2, 3, 4
+```

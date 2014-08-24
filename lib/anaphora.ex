@@ -145,4 +145,59 @@ defmodule Anaphora do
       end
     end
   end
+
+  @doc """
+  Works like `fn`, except that anonymous function is bind to `it` (via `blood magic`)
+
+  ## Examples
+
+     iex> fact = Anaphora.afn do
+     ...>   0 -> 1
+     ...>   1 -> 1
+     ...>   n when n > 0 -> n * it.(n - 1)
+     ...> end
+     ...> fact.(5)
+     120
+
+     iex> fib = Anaphora.afn do
+     ...>   0 -> 1
+     ...>   1 -> 1
+     ...>   n when n > 0 -> it.(n - 1) + it.(n - 2)
+     ...> end
+     ...> Enum.map(1..7, fib)
+     [1, 2, 3, 5, 8, 13, 21]
+
+     iex> (Anaphora.afn do
+     ...>   x, y when x > 0 -> x + it.(x - 1, y)
+     ...>   0, y when y > 0 -> y + it.(0, y - 1)
+     ...>   0, 0 -> 0
+     ...> end).(2, 4)
+     13
+
+  """
+  defmacro afn(do: definitions) do
+    ys = generate_z_combinator_ys(hd(definitions))
+
+    # λx.f (λys.((x x) ys))
+    lambda_x = quote do: fn x -> f.(fn unquote_splicing(ys) -> (x.(x)).(unquote_splicing(ys)) end) end
+
+    lambda_f = quote do: fn f -> (unquote(lambda_x)).(unquote(lambda_x)) end
+    lambda_it = quote do: fn unquote(it) -> unquote({:fn, [], definitions}) end
+
+    quote do: (unquote(lambda_f)).(unquote(lambda_it))
+  end
+
+  defp generate_z_combinator_ys({:->, _context, [arguments, _body]}) do
+    next_y = fn n -> Macro.var(String.to_atom("y#{n}"), __MODULE__) end
+
+    Enum.map(1..number_of_afn_arguments(arguments), next_y)
+  end
+
+  defp number_of_afn_arguments([{:when, _context, arguments}]) do
+    Enum.count(arguments) - 1
+  end
+
+  defp number_of_afn_arguments(arguments) do
+    Enum.count(arguments)
+  end
 end
