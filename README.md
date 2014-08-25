@@ -1,6 +1,6 @@
 ## Anaphora
 
-Anaphora is the anaphoric macro collection for [Elixir](https://github.com/elixir-lang/elixir/). An anaphoric macro is one that deliberately captures a variable from forms supplied to the macro.
+Anaphora is the anaphoric macro collection for [Elixir](https://github.com/elixir-lang/elixir/). An anaphoric macro is one that deliberately captures a variable (typically `it`) from forms supplied to the macro.
 
 ### Getting Started
 
@@ -10,7 +10,7 @@ Just add the `anaphora` project to your mix file as a dependency. Then `use Anap
 
 #### alet
 
-`alet` is basic anaphoric macro. It's not very useful in user code but other anaphoric macros are built on top of it. `alet` binds some expression to the `it` variable (via `case`) in the scope of the body:
+`alet` is basic anaphoric macro. It's not very useful in user code but other anaphoric macros are built on top of it. `alet` binds result of the expression to the `it` variable (via `case`) in the scope of the body:
 
 ```elixir
 defmodule User do
@@ -65,7 +65,7 @@ Works like `case`, except that result of the key expression is bound to `it` (vi
 
 #### afn
 
-Works like `fn`, except that anonymous function is bind to `it` (via `blood magic`):
+Works like `fn`, except that anonymous function is bound to `it` (via `blood magic`) for the scope of the function  body:
 
 ```elixir
 import Anaphora
@@ -84,7 +84,7 @@ in_order_tree_traversal.({{nil, 1, nil}, 2, {nil, 3, {nil, 4, nil}}}, &IO.puts/1
 
 #### aand
 
-Evaluates each clause one at a time and binds result to `it`. As soon as any clause evaluates to `nil` (or `false`), and returns `nil` without evaluating the remaining clauses. If all clauses but the last evaluate to true values, `aand` returns the results produced by evaluating the last clause:
+Evaluates each clause one at a time and binds result to `it`. As soon as any clause evaluates to `nil` (or `false`), `aand` returns `nil` without evaluating the remaining clauses. If all clauses but the last evaluate to true values, `aand` returns the results produced by evaluating the last clause:
 
 ```elixir
 defmodule Notification do
@@ -100,3 +100,7 @@ defmodule Notification do
   end
 end
 ```
+
+### License
+
+Anaphora source code is released under The MIT License. Check LICENSE file for more information.
