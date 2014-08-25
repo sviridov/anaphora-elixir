@@ -81,7 +81,9 @@ defmodule Anaphora do
      iex> Anaphora.acond do
      ...>   1 + 2 == 4 -> :never
      ...>   false -> :never
-     ...>   2 * 2 + 2 -> it / 2
+     ...>   2 * 2 + 2 ->
+     ...>     it * 2 # do some staff
+     ...>     it / 2
      ...>   true -> :never
      ...> end
      3.0
@@ -95,16 +97,12 @@ defmodule Anaphora do
   defmacro acond(clauses)
   defmacro acond(do: []), do: nil
   defmacro acond(do: clauses) do
-    {:->, _context, [[condition], body]} = hd(clauses)
+    clauses |> Enum.reverse |> Enum.reduce(nil, &expand_acond_clause/2)
+  end
 
+  defp expand_acond_clause({:->, _c, [[condition], then_body]}, else_body) do
     quote do
-      Anaphora.aif unquote(condition) do
-        unquote(body)
-      else
-        Anaphora.acond do
-          unquote(tl(clauses))
-        end
-      end
+      Anaphora.aif unquote(condition), do: unquote(then_body), else: unquote(else_body)
     end
   end
 
@@ -179,7 +177,7 @@ defmodule Anaphora do
   """
   defmacro aand(clauses)
   defmacro aand(do: nil), do: true
-  defmacro aand(do: {:__block__, _context, clauses}) do
+  defmacro aand(do: {:__block__, _c, clauses}) do
     clauses |> Enum.reverse |> Enum.reduce(&expand_aand_clause/2)
   end
   defmacro aand(do: expression), do: expression
@@ -191,7 +189,7 @@ defmodule Anaphora do
   end
 
   @doc """
-  Works like `fn`, except that anonymous function is bind to `it` (via `blood magic`)
+  Works like `fn`, except that anonymous function is bound to `it` (via `blood magic`)
 
   ## Examples
 
@@ -223,25 +221,23 @@ defmodule Anaphora do
     ys = generate_z_combinator_ys(hd(definitions))
 
     # λx.f (λys.((x x) ys))
-    lambda_x = quote do: fn x -> f.(fn unquote_splicing(ys) -> (x.(x)).(unquote_splicing(ys)) end) end
+    lambda_x =
+      quote do: fn x -> f.(fn unquote_splicing(ys) -> (x.(x)).(unquote_splicing(ys)) end) end
 
-    lambda_f = quote do: fn f -> (unquote(lambda_x)).(unquote(lambda_x)) end
-    lambda_it = quote do: fn unquote(it) -> unquote({:fn, [], definitions}) end
+    lambda_f =
+      quote do: fn f -> (unquote(lambda_x)).(unquote(lambda_x)) end
+
+    lambda_it =
+      quote do: fn unquote(it) -> unquote({:fn, [], definitions}) end
 
     quote do: (unquote(lambda_f)).(unquote(lambda_it))
   end
 
-  defp generate_z_combinator_ys({:->, _context, [arguments, _body]}) do
-    next_y = fn n -> Macro.var(String.to_atom("y#{n}"), __MODULE__) end
-
-    Enum.map(1..number_of_afn_arguments(arguments), next_y)
+  defp generate_z_combinator_ys({:->, _c, [arguments, _body]}) do
+    1..number_of_afn_arguments(arguments)
+      |> Enum.map &(Macro.var(String.to_atom("y#{&1}"), __MODULE__))
   end
 
-  defp number_of_afn_arguments([{:when, _context, arguments}]) do
-    Enum.count(arguments) - 1
-  end
-
-  defp number_of_afn_arguments(arguments) do
-    Enum.count(arguments)
-  end
+  defp number_of_afn_arguments([{:when, _c, arguments}]), do: Enum.count(arguments) - 1
+  defp number_of_afn_arguments(arguments), do: Enum.count(arguments)
 end
