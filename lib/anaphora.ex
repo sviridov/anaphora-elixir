@@ -146,7 +146,7 @@ defmodule Anaphora do
 
   @doc """
   Evaluates each `clause` one at a time and binds result to `it`. As soon as any `clause`
-  evaluates to `nil` (or `false`), and returns `nil` without evaluating the remaining
+  evaluates to `nil` (or `false`), `aand` returns `nil` without evaluating the remaining
   `clauses`. If all `clauses` but the last evaluate to true values, `aand` returns the
   results produced by evaluating the last `clause`
 
