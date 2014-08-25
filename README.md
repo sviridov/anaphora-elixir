@@ -82,6 +82,8 @@ in_order_tree_traversal.({{nil, 1, nil}, 2, {nil, 3, {nil, 4, nil}}}, &IO.puts/1
 # => 1, 2, 3, 4
 ```
 
+**warning:** Invocation of `it` takes a lot of time. Don't use `afn` in performance critical code. It will be fixed after [Elixir](https://github.com/elixir-lang/elixir/) `1.0` release.
+
 #### aand
 
 Evaluates each clause one at a time and binds result to `it`. As soon as any clause evaluates to `nil` (or `false`), `aand` returns `nil` without evaluating the remaining clauses. If all clauses but the last evaluate to true values, `aand` returns the results produced by evaluating the last clause:
