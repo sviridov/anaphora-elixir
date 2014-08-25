@@ -1,10 +1,18 @@
 ## Anaphora
 
-Anaphora is the anaphoric macro collection for [Elixir](https://github.com/elixir-lang/elixir/). An anaphoric macro is one that deliberately captures a variable (typically `it`) from forms supplied to the macro.
+`Anaphora` is the anaphoric macro collection for [Elixir](https://github.com/elixir-lang/elixir/). An anaphoric macro is one that deliberately captures a variable (typically `it`) from forms supplied to the macro.
 
 ### Getting Started
 
-Just add the `anaphora` project to your mix file as a dependency. Then `use Anaphora` module.
+ - Add the `Anaphora` dependency to your `mix.exs` file:
+
+```elixir
+def deps do
+    [{:anaphora, "~> 0.0.1"}]
+end
+```
+
+ - After you are done, run `mix deps.get` in your shell.
 
 ### Provided API
 
