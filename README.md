@@ -81,3 +81,22 @@ end
 in_order_tree_traversal.({{nil, 1, nil}, 2, {nil, 3, {nil, 4, nil}}}, &IO.puts/1)
 # => 1, 2, 3, 4
 ```
+
+#### aand
+
+Evaluates each clause one at a time and binds result to `it`. As soon as any clause evaluates to `nil` (or `false`), and returns `nil` without evaluating the remaining clauses. If all clauses but the last evaluate to true values, `aand` returns the results produced by evaluating the last clause:
+
+```elixir
+defmodule Notification do
+  use Anaphora
+
+  ...
+  def send_email_to_user(user_id, message) do
+    aand do
+      fetch_user(user_id)
+      it.email
+      send_email(it, message)
+    end || raise "Unable to send email"
+  end
+end
+```

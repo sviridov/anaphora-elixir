@@ -147,6 +147,50 @@ defmodule Anaphora do
   end
 
   @doc """
+  Evaluates each `clause` one at a time and binds result to `it`. As soon as any `clause`
+  evaluates to `nil` (or `false`), and returns `nil` without evaluating the remaining
+  `clauses`. If all `clauses` but the last evaluate to true values, `aand` returns the
+  results produced by evaluating the last `clause`
+
+  ## Examples
+
+     iex> Anaphora.aand do
+     ...> end
+     true
+
+     iex> Anaphora.aand do
+     ...>   :aand_test
+     ...> end
+     :aand_test
+
+     iex> Anaphora.aand do
+     ...>   2 + 3
+     ...>   1 + it + 4
+     ...>   it * 20
+     ...> end
+     200
+
+     iex> Anaphora.aand do
+     ...>   1 == 2
+     ...>   !it
+     ...> end
+     nil
+
+  """
+  defmacro aand(clauses)
+  defmacro aand(do: nil), do: true
+  defmacro aand(do: {:__block__, _context, clauses}) do
+    clauses |> Enum.reverse |> Enum.reduce(&expand_aand_clause/2)
+  end
+  defmacro aand(do: expression), do: expression
+
+  defp expand_aand_clause(clause, body) do
+    quote do
+      Anaphora.aif unquote(clause), do: unquote(body)
+    end
+  end
+
+  @doc """
   Works like `fn`, except that anonymous function is bind to `it` (via `blood magic`)
 
   ## Examples
