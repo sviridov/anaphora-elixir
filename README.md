@@ -8,7 +8,7 @@
 
 ```elixir
 def deps do
-    [{:anaphora, "~> 0.0.1"}]
+    [{:anaphora, "~> 0.1.0"}]
 end
 ```
 

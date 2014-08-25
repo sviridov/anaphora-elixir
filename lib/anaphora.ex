@@ -1,5 +1,5 @@
 defmodule Anaphora do
-  @vsn "0.0.1"
+  @vsn "0.1.0"
 
   @moduledoc """
   The anaphoric macro collection for Elixir
