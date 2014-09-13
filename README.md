@@ -1,4 +1,4 @@
-## Anaphora
+## Anaphora [![license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/sviridov/anaphora-elixir/blob/master/LICENSE) [![hex.pm](http://img.shields.io/badge/hex.pm-0.1.0-brightgreen.svg)](https://hex.pm/packages/anaphora)
 
 `Anaphora` is the anaphoric macro collection for [Elixir](https://github.com/elixir-lang/elixir/). An anaphoric macro is one that deliberately captures a variable (typically `it`) from forms supplied to the macro.
 
