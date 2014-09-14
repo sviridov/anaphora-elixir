@@ -3,8 +3,7 @@ defmodule Anaphora.Mixfile do
 
   def project do
     [app: :anaphora,
-     version: "0.1.0",
-     elixir: "~> 0.15.1",
+     version: "0.1.1",
      deps: deps,
      package: package,
      description: description]
