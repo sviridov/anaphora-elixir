@@ -235,7 +235,7 @@ defmodule Anaphora do
 
   defp generate_z_combinator_ys({:->, _c, [arguments, _body]}) do
     1..number_of_afn_arguments(arguments)
-      |> Enum.map &(Macro.var(String.to_atom("y#{&1}"), __MODULE__))
+      |> Enum.map(&(Macro.var(String.to_atom("y#{&1}"), __MODULE__)))
   end
 
   defp number_of_afn_arguments([{:when, _c, arguments}]), do: Enum.count(arguments) - 1
