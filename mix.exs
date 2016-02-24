@@ -3,7 +3,7 @@ defmodule Anaphora.Mixfile do
 
   def project do
     [app: :anaphora,
-     version: "0.1.1",
+     version: "0.1.2",
      deps: deps,
      package: package,
      description: description]
@@ -24,7 +24,7 @@ defmodule Anaphora.Mixfile do
   end
 
   defp package do
-    [contributors: ["Alexander Sviridov"],
+    [maintainers: ["Alexander Sviridov"],
      licenses: ["The MIT License"],
      links: %{"Github" => "https://github.com/sviridov/anaphora-elixir"}]
   end
